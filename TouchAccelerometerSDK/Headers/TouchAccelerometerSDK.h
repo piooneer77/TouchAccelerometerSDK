@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "EventManager.h"
 
 //! Project version number for TouchAccelerometerSDK.
 FOUNDATION_EXPORT double TouchAccelerometerSDKVersionNumber;
