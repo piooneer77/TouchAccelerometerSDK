@@ -29,7 +29,14 @@
 		C94F518C2CD2F478006BB12D /* Exceptions for "TouchAccelerometerSDK" folder in "TouchAccelerometerSDK" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			publicHeaders = (
-				Headers/TouchAccelerometerSDK.h,
+				Common/EventTrackable.h,
+				EventManager.h,
+				Modules/Accelerometer/Models/AccelerometerEvent.h,
+				Modules/Accelerometer/Services/AccelerometerServiceProtocol.h,
+				Modules/Touch/Models/TouchEvent.h,
+				Modules/Touch/Models/TouchEventType.h,
+				Modules/Touch/TouchEventServiceProtocol.h,
+				TouchAccelerometerSDK.h,
 			);
 			target = C94F51792CD2F478006BB12D /* TouchAccelerometerSDK */;
 		};
