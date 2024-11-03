@@ -7,16 +7,13 @@
 
 #import <Foundation/Foundation.h>
 #import "AccelerometerServiceProtocol.h"
+#import "AccelerometerEventStoring.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString *const TouchEventServiceAssociatedKey;
-
 @interface AccelerometerService : NSObject <AccelerometerServiceProtocol>
 - (instancetype)init;
-- (void)startAccelerometerCollection;
-- (void)stopAccelerometerCollection;
-- (NSArray<AccelerometerEvent *> *)retrieveAccelerometerData;
+- (instancetype)initWithStorage:(id<AccelerometerEventStoring>)storage;
 @end
 
 NS_ASSUME_NONNULL_END

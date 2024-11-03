@@ -31,8 +31,8 @@
 			publicHeaders = (
 				Common/EventTrackable.h,
 				EventManager.h,
+				Modules/Accelerometer/AccelerometerServiceProtocol.h,
 				Modules/Accelerometer/Models/AccelerometerEvent.h,
-				Modules/Accelerometer/Services/AccelerometerServiceProtocol.h,
 				Modules/Touch/Models/TouchEvent.h,
 				Modules/Touch/Models/TouchEventType.h,
 				Modules/Touch/TouchEventServiceProtocol.h,

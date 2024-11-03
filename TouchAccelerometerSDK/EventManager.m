@@ -6,14 +6,14 @@
 //
 
 #import "EventManager.h"
-#import "DataRepository.h"
 #import "TouchEventService.h"
 #import "AccelerometerService.h"
 
 @interface EventManager ()
 @property (nonatomic, strong, readonly) id<TouchEventServiceProtocol> touchEventService;
 @property (nonatomic, strong, readonly) id<AccelerometerServiceProtocol> accelerometerService;
-@property (nonatomic, strong, readonly) DataRepository *dataRepository;
+@property (nonatomic, assign) EventCollectionState collectionState;
+@property (nonatomic, strong) NSError *lastError;
 @end
 
 @implementation EventManager
@@ -28,11 +28,17 @@
 }
 
 - (instancetype)initPrivate {
+    return [self initWithTouchService:[[TouchEventService alloc] init]
+                 accelerometerService:[[AccelerometerService alloc] init]];
+}
+
+- (instancetype)initWithTouchService:(id<TouchEventServiceProtocol>)touchService
+                accelerometerService:(id<AccelerometerServiceProtocol>)accelerometerService {
     self = [super init];
     if (self) {
-        _touchEventService = [[TouchEventService alloc] init];
-        _accelerometerService = [[AccelerometerService alloc] init];
-        _dataRepository = [[DataRepository alloc] init];
+        _touchEventService = touchService;
+        _accelerometerService = accelerometerService;
+        _collectionState = EventCollectionStateIdle;
     }
     return self;
 }
@@ -43,36 +49,60 @@
 }
 
 - (void)dealloc {
-    [_touchEventService stopTouchEventCollection];
-    [_accelerometerService stopAccelerometerCollection];
+    [self stopCollection];
 }
 
 - (void)startCollection {
-    [self.touchEventService startTouchEventCollection];
-    [self.accelerometerService startAccelerometerCollection];
+    @try {
+        self.collectionState = EventCollectionStateCollecting;
+        [self.touchEventService startTouchEventCollection];
+        [self.accelerometerService startAccelerometerCollection];
+    } @catch (NSException *exception) {
+        self.lastError = [NSError errorWithDomain:@"com.touchaccelerometersdk"
+                                             code:1001
+                                         userInfo:@{NSLocalizedDescriptionKey: exception.reason ?: @"Failed to start collection"}];
+        self.collectionState = EventCollectionStateError;
+    }
 }
 
 - (void)stopCollection {
-    [self.touchEventService stopTouchEventCollection];
-    [self.accelerometerService stopAccelerometerCollection];
+    @try {
+        [self.touchEventService stopTouchEventCollection];
+        [self.accelerometerService stopAccelerometerCollection];
+        self.collectionState = EventCollectionStateIdle;
+    } @catch (NSException *exception) {
+        self.lastError = [NSError errorWithDomain:@"com.touchaccelerometersdk"
+                                             code:1002
+                                         userInfo:@{NSLocalizedDescriptionKey: exception.reason ?: @"Failed to stop collection"}];
+        self.collectionState = EventCollectionStateError;
+    }
 }
 
-- (NSArray<NSDictionary *> *)retrieveCollectedData {
-    NSArray *touchEvents = [self.touchEventService retrieveTouchEvents];
-    NSArray *accelerometerData = [self.accelerometerService retrieveAccelerometerData];
-    // Sort and combine both arrays based on timestamp or criteria.
+- (NSArray<TouchEvent *> *)retrieveTouchEvents {
+    return [self.touchEventService retrieveTouchEvents];
+}
+
+- (NSArray<AccelerometerEvent *> *)retrieveAccelerometerEvents {
+    return [self.accelerometerService retrieveAccelerometerData];
+}
+
+- (NSArray<id<EventTrackable>> *)retrieveCollectedData {
+    NSArray *touchEvents = [self retrieveTouchEvents];
+    NSArray *accelerometerData = [self retrieveAccelerometerEvents];
     return [self mergeAndSortData:touchEvents accelerometerData:accelerometerData];
 }
 
-- (NSArray<NSDictionary *> *)mergeAndSortData:(NSArray *)touchEvents accelerometerData:(NSArray *)accelerometerData {
-    NSMutableArray *mergedData = [NSMutableArray array];
+- (NSArray<id<EventTrackable>> *)mergeAndSortData:(NSArray<TouchEvent *> *)touchEvents
+                                accelerometerData:(NSArray<AccelerometerEvent *> *)accelerometerData {
+    NSMutableArray<id<EventTrackable>> *mergedData = [NSMutableArray array];
+    
     [mergedData addObjectsFromArray:touchEvents];
     [mergedData addObjectsFromArray:accelerometerData];
-    [mergedData sortUsingComparator:^NSComparisonResult(NSDictionary *obj1, NSDictionary *obj2) {
-        NSNumber *timestamp1 = obj1[@"timestamp"];
-        NSNumber *timestamp2 = obj2[@"timestamp"];
-        return [timestamp1 compare:timestamp2];
+    
+    [mergedData sortUsingComparator:^NSComparisonResult(id<EventTrackable> obj1, id<EventTrackable> obj2) {
+        return [obj1.timestamp compare:obj2.timestamp];
     }];
+    
     return [mergedData copy];
 }
 
