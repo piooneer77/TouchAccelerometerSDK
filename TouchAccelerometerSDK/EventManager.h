@@ -6,14 +6,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TouchEventServiceProtocol.h"
-#import "AccelerometerServiceProtocol.h"
+#import <TouchAccelerometerSDK/TouchEventServiceProtocol.h>
+#import <TouchAccelerometerSDK/AccelerometerServiceProtocol.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EventManager : NSObject
-- (instancetype)initWithTouchService:(id<TouchEventServiceProtocol>)touchService
-                    accelerometerService:(id<AccelerometerServiceProtocol>)accelerometerService;
++ (instancetype)sharedInstance;
 - (void)startCollection;
 - (void)stopCollection;
 - (NSArray<NSDictionary *> *)retrieveCollectedData;

@@ -6,12 +6,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <TouchAccelerometerSDK/TouchEvent.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol TouchEventServiceProtocol <NSObject>
-- (void)startTracking;
-- (void)stopTracking;
+- (void)startTouchEventCollection;
+- (void)stopTouchEventCollection;
+- (NSArray<TouchEvent *> *)retrieveTouchEvents;
 @end
 
 NS_ASSUME_NONNULL_END

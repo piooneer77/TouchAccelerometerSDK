@@ -20,4 +20,3 @@
     // Stop simulated data if needed
 }
 @end
-
