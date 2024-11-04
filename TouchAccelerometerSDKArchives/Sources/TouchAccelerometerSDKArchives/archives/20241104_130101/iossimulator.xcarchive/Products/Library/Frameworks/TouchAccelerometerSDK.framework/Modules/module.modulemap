@@ -1,0 +1,6 @@
+framework module TouchAccelerometerSDK {
+  umbrella header "TouchAccelerometerSDK.h"
+  export *
+
+  module * { export * }
+}
