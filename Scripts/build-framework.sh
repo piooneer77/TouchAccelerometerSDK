@@ -5,7 +5,7 @@ FRAMEWORK_NAME="TouchAccelerometerSDK"
 ARCHIVE_REPO_PATH="../${FRAMEWORK_NAME}Archives"
 BUILD_DIR="build"
 CURRENT_DATE=$(date +%Y%m%d_%H%M%S)
-ARCHIVE_DIR="${ARCHIVE_REPO_PATH}/TouchAccelerometerSDKArchives/Sources/TouchAccelerometerSDKArchives/archives/${CURRENT_DATE}"
+ARCHIVE_DIR="${ARCHIVE_REPO_PATH}/TouchAccelerometerSDKArchives/Sources/TouchAccelerometerSDKArchives/archives"
 
 # Ensure archive repo directory exists
 mkdir -p "${ARCHIVE_DIR}"
@@ -38,9 +38,9 @@ xcodebuild -create-xcframework \
     -framework ${BUILD_DIR}/iossimulator.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME}.framework \
     -output "${ARCHIVE_DIR}/${FRAMEWORK_NAME}.xcframework"
 
-# Copy archives to archive repo
-cp -R ${BUILD_DIR}/ios.xcarchive "${ARCHIVE_DIR}/ios.xcarchive"
-cp -R ${BUILD_DIR}/iossimulator.xcarchive "${ARCHIVE_DIR}/iossimulator.xcarchive"
+# Copy archives to archive repo uncomment if needed in development
+# cp -R ${BUILD_DIR}/ios.xcarchive "${ARCHIVE_DIR}/ios.xcarchive"
+# cp -R ${BUILD_DIR}/iossimulator.xcarchive "${ARCHIVE_DIR}/iossimulator.xcarchive"
 
 # Clean up build directory
 rm -rf ${BUILD_DIR}
