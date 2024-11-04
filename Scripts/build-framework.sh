@@ -8,6 +8,7 @@ CURRENT_DATE=$(date +%Y%m%d_%H%M%S)
 ARCHIVE_DIR="${ARCHIVE_REPO_PATH}/TouchAccelerometerSDKArchives/Sources"
 
 # Ensure archive repo directory exists
+rm -rf ${ARCHIVE_DIR}
 mkdir -p "${ARCHIVE_DIR}"
 
 # Clean previous build
@@ -31,8 +32,6 @@ xcodebuild archive \
     -archivePath "${BUILD_DIR}/iossimulator.xcarchive" \
     BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
     SKIP_INSTALL=NO
-
-rm -rf ${RCHIVE_DIR}
 
 # Create XCFramework combining both archives
 xcodebuild -create-xcframework \
