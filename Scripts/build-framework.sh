@@ -38,7 +38,7 @@ xcodebuild -create-xcframework \
     -framework ${BUILD_DIR}/iossimulator.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME}.framework \
     -output "${ARCHIVE_DIR}/${FRAMEWORK_NAME}.xcframework"
 
-# Copy archives to archive repo uncomment if needed in development
+# Copy archives to archive repo uncomment if needed in development.
 # cp -R ${BUILD_DIR}/ios.xcarchive "${ARCHIVE_DIR}/ios.xcarchive"
 # cp -R ${BUILD_DIR}/iossimulator.xcarchive "${ARCHIVE_DIR}/iossimulator.xcarchive"
 
