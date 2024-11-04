@@ -32,6 +32,8 @@ xcodebuild archive \
     BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
     SKIP_INSTALL=NO
 
+rm -rf ${RCHIVE_DIR}
+
 # Create XCFramework combining both archives
 xcodebuild -create-xcframework \
     -framework ${BUILD_DIR}/ios.xcarchive/Products/Library/Frameworks/${FRAMEWORK_NAME}.framework \
