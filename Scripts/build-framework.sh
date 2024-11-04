@@ -2,7 +2,7 @@
 
 # Configuration
 FRAMEWORK_NAME="TouchAccelerometerSDK"
-ARCHIVE_REPO_PATH="../${FRAMEWORK_NAME}Archives"
+ARCHIVE_REPO_PATH="../${FRAMEWORK_NAME}/TouchAccelerometerSDKArchives/Sources/TouchAccelerometerSDKArchives/archives"
 BUILD_DIR="build"
 CURRENT_DATE=$(date +%Y%m%d_%H%M%S)
 ARCHIVE_DIR="${ARCHIVE_REPO_PATH}/archives/${CURRENT_DATE}"
