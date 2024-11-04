@@ -10,9 +10,11 @@
 #import "WindowManaging.h"
 #import "TouchEventIntercepting.h"
 #import "TouchEventStoring.h"
+#import "APIClientProtocol.h"
 
 @interface TouchEventService : NSObject <TouchEventServiceProtocol>
 - (instancetype)initWithWindowManager:(id<WindowManaging>)windowManager
                      eventInterceptor:(id<TouchEventIntercepting>)interceptor
-                              storage:(id<TouchEventStoring>)storage;
+                              storage:(id<TouchEventStoring>)storage
+                            apiClient:(id<APIClientProtocol>)apiClient;
 @end
