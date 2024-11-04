@@ -5,7 +5,7 @@ FRAMEWORK_NAME="TouchAccelerometerSDK"
 ARCHIVE_REPO_PATH="../${FRAMEWORK_NAME}Archives"
 BUILD_DIR="build"
 CURRENT_DATE=$(date +%Y%m%d_%H%M%S)
-ARCHIVE_DIR="${ARCHIVE_REPO_PATH}/TouchAccelerometerSDKArchives/Sources/TouchAccelerometerSDKArchives/archives"
+ARCHIVE_DIR="${ARCHIVE_REPO_PATH}/TouchAccelerometerSDKArchives/Sources"
 
 # Ensure archive repo directory exists
 mkdir -p "${ARCHIVE_DIR}"
