@@ -5,7 +5,7 @@ FRAMEWORK_NAME="TouchAccelerometerSDK"
 ARCHIVE_REPO_PATH="../${FRAMEWORK_NAME}/TouchAccelerometerSDKArchives/Sources/TouchAccelerometerSDKArchives/archives"
 BUILD_DIR="build"
 CURRENT_DATE=$(date +%Y%m%d_%H%M%S)
-ARCHIVE_DIR="${ARCHIVE_REPO_PATH}/archives/${CURRENT_DATE}"
+ARCHIVE_DIR="${ARCHIVE_REPO_PATH}/${CURRENT_DATE}"  # Removed extra "archives" from path
 
 # Ensure archive repo directory exists
 mkdir -p "${ARCHIVE_DIR}"
@@ -47,9 +47,16 @@ rm -rf ${BUILD_DIR}
 
 # If running as part of git hook, commit and push changes
 if [ "$1" == "hook" ]; then
-    cd "${ARCHIVE_REPO_PATH}"
+    # Store the original directory
+    ORIGINAL_DIR=$(pwd)
+    
+    # Navigate to the TouchAccelerometerSDKArchives root directory (3 levels up from archives)
+    cd "${ARCHIVE_REPO_PATH}/../../.." || exit
+    
     git add .
-    git commit -m "Archive build for commit $(cd - > /dev/null && git rev-parse HEAD)"
+    git commit -m "Archive build for commit $(cd "${ORIGINAL_DIR}" && git rev-parse HEAD)"
     git push
-    cd - > /dev/null
+    
+    # Return to original directory
+    cd "${ORIGINAL_DIR}" || exit
 fi
